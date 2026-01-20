@@ -1,0 +1,29 @@
+*{
+  padding: 0;
+  margin: 0;
+  font-family: sans-serif;
+}
+
+.Head{
+  background-color: rgb(12, 12, 108);
+  padding: 10px;
+  text-align: center;
+  color: white;
+  font-size: 50px;
+
+}
+.foot{
+  background-color:rgb(12, 12, 108) ;
+  color: white;
+  font-size: 20px;
+  text-align: center;
+}
+
+.app{
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  justify-content: space-between;
+  width: 100%;
+
+}
