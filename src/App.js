@@ -1,5 +1,6 @@
 import Footer from './Footer';
-import Header from './Header'
+import Header from './Header';
+import Content from './Content';
 
 
 function App() {
@@ -7,7 +8,9 @@ function App() {
    <>
    <div className="app">
       <Header/>
+      <Content/>
       <Footer/>
+
       </div>
    </>
   );
