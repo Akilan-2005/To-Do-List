@@ -15,26 +15,47 @@ function Content() {
     setItems(newItems);
   };
 
+   const onremove = (id) => {
+    const newItems = items.filter((item) =>
+      item.id !== id 
+    );
+    setItems(newItems);
+  };
+
   return (
+    <>
+
+    {items.length? (
+    
     <ul>
       {items.map((item) => (
         <li className="item" key={item.id}>
           <input
+           
             type="checkbox"
             checked={item.checked}
             onChange={() => handleCheck(item.id)}
           />
 
-          <label>{item.item}</label>
+          <label
+          style={(item.checked)?{textDecoration:'line-through'}:null}>
+           
+             
+              {item.item}
+          </label>
 
           <FaTrash
             role="button"
             tabIndex="0"
-            onClick={() => handleCheck(item.id)}
+            onClick={() => onremove(item.id)}
           />
         </li>
       ))}
-    </ul>
+    </ul>):(
+      <p>list is empty</p>
+    )}
+
+    </>
   );
 }
 
