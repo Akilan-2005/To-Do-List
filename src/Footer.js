@@ -1,11 +1,11 @@
 
 
 
-function Footer(){
-    return(
+function Footer({ items }) {
+    return (
         <>
-        
-            <p className="foot"> All rights reserved &copy; 2026 Akilan</p>
+
+            <p className="foot"> {items} listed {items === 0 ? "item" : "items"} </p>
         </>
 
     )

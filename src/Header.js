@@ -1,8 +1,8 @@
 
-function Header(){
-    return(
+function Header() {
+    return (
         <>
-        <h1 className="Head">To Do List</h1>
+            <h1 className="Head">To Do List</h1>
         </>
     )
 }
