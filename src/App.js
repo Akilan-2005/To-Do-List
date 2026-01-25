@@ -3,76 +3,74 @@ import Search from './Search';
 import Content from './Content';
 import Footer from './Footer';
 import Header from './Header';
-import { useState } from "react";
-
-
+import { useState, useEffect } from "react";
 
 function App() {
-  const [items, setItems] = useState([JSON.parse(localStorage.getItem('To-Do-List'))]);
+  const [items, setItems] = useState(() => {
+    const saved = localStorage.getItem("To-Do-List");
+    return saved ? JSON.parse(saved) : [];
+  });
 
-  const [Nvar, setNvar] = useState(" ");
+  const [Nvar, setNvar] = useState("");
+  const [search, setSearch] = useState("");
 
-  const [search, setSearch] = useState(" ")
+  useEffect(() => {
+    localStorage.setItem("To-Do-List", JSON.stringify(items));
+  }, [items]);
 
-  const addItme = (item) => {
-    const id = Date.now()
-    const newarr = { id, checked: false, item };
-    const listItem = [...items, newarr]
-    setItems(listItem)
-    localStorage.setItem("To-Do-List", JSON.stringify(listItem))
-  }
-
-  const handleCheck = (id) => {
-    const newItems = items.map((item) =>
-      item.id === id ? { ...item, checked: !item.checked } : item
-    );
-    setItems(newItems);
-    localStorage.setItem("To-Do-List", JSON.stringify(newItems))
+  const addItem = (text) => {
+    setItems(prev => [
+      ...prev,
+      { id: Date.now(), checked: false, item: text }
+    ]);
   };
 
-  const onremove = (id) => {
-    const newItems = items.filter((item) =>
-      item.id !== id
+  const handleCheck = (id) => {
+    setItems(prev =>
+      prev.map(it =>
+        it.id === id ? { ...it, checked: !it.checked } : it
+      )
     );
-    setItems(newItems);
-    localStorage.setItem("To-Do-List", JSON.stringify(newItems))
+  };
+
+  const onRemove = (id) => {
+    setItems(prev => prev.filter(it => it.id !== id));
   };
 
   const sub = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     if (!Nvar) return;
-    console.log(Nvar);
-    addItme(Nvar)
-
+    addItem(Nvar);
+    setNvar("");
   };
+
   return (
-    <>
-      <div className="app">
-        <Header />
-        <AddItems
-          puthusu={Nvar}
-          setPuthusu={setNvar}
-          sub={sub}
-        />
-        <Search
-          search={search}
-          setSearch={setSearch}
+    <div className="app">
+      <Header />
 
-        />
+      <AddItems
+        puthusu={Nvar}
+        setPuthusu={setNvar}
+        sub={sub}
+      />
 
-        <Content
-          items={items.filter(item =>
-            item.item?.toLowerCase().includes(search.toLowerCase())
-          )}
-          handleCheck={handleCheck}
-          onremove={onremove}
-        />
-        <Footer
-          items={items.length}
-        />
+      <Search
+        search={search}
+        setSearch={setSearch}
+      />
 
-      </div>
-    </>
+      <Content
+  items={items.filter(item =>
+    typeof item?.item === "string" &&
+    item.item.toLowerCase().includes(search.toLowerCase())
+  )}
+  handleCheck={handleCheck}
+  onremove={onRemove}
+/>
+
+
+      <Footer items={items.length} />
+    </div>
   );
 }
 
